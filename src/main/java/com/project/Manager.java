@@ -106,13 +106,22 @@ public class Manager {
         return result;
     }
 
-    public static Ciutat getCiutatWithCiutadans(long ciutatId) {
+    public static Ciutat getCiutatWithCiutadans(Long ciutatId) {
+        Session session = factory.openSession();
+        Ciutat ciutat = null;
+        try {
+            ciutat = session.get(Ciutat.class, ciutatId);
 
-        return null;
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return ciutat;
     }
 
 
-    public static void updateCiutat(Long ciutatId,String nomCiutat, String pais,int poblacio, Set<Ciutada> ciutadants ){
+    public static void updateCiutat(Long ciutatId,String nomCiutat, String pais,int poblacio, Set<Ciutada> ciutadans ){
 
         //obrir conexio
         Session session =factory.openSession();
@@ -130,15 +139,15 @@ public class Manager {
             ciutat.setPais(pais);
             ciutat.setPoblacio(poblacio);
 
-            //si hi ha ciutadants existens a la bbdd s'eliminen
-            if (ciutat.getCiutadants()!=null){
-                for (Ciutada oldCiutada : new HashSet<>(ciutat.getCiutadants())){
+            //si hi ha ciutadans existens a la bbdd s'eliminen
+            if (ciutat.getCiutadans()!=null){
+                for (Ciutada oldCiutada : new HashSet<>(ciutat.getCiutadans())){
                     ciutat.removeCiutada(oldCiutada);
                 }
             }
-            //si hi ha ciutadants per afegir s'afegeixen
-            if (ciutadants!=null){
-                for (Ciutada ciutada : ciutadants) {
+            //si hi ha ciutadans per afegir s'afegeixen
+            if (ciutadans!=null){
+                for (Ciutada ciutada : ciutadans) {
                     Ciutada managedCiutada =session.get(Ciutada.class,ciutada.getCiutadaId());
                     if (managedCiutada!=null){
                         ciutat.addCiutada(managedCiutada);
@@ -156,14 +165,9 @@ public class Manager {
         }finally {
             session.close();
         }
-
-
-
-
-
     }
 
-    public static void updateCiutada(long ciutadaId, String nom, String cognom, int edat) {
+    public static void updateCiutada(Long ciutadaId, String nom, String cognom, int edat) {
         Session session = factory.openSession();
         Transaction tx = null;
         try{
@@ -190,9 +194,23 @@ public class Manager {
     public static <T>void delete(Class <?extends T> clase, Long id) {
         Session session = factory.openSession();
         Transaction tx = null;
+        T objecte = null;
         try{
             tx = session.beginTransaction();
-            T objecte =clase.cast(session.get(clase,id));
+            //aixo es fa perque pot ser un objecte qualsevol i d'aquesta manera s'obte la classe
+            objecte = clase.cast(session.get(clase,id));
+            if (objecte != null){
+                session.remove(objecte);
+                tx.commit();
+            }
+            
+        }catch (HibernateException e){
+            if (tx != null){
+                tx.rollback();
+                e.printStackTrace();
+            }
+        }finally {
+            session.close();
         }
     }
 }

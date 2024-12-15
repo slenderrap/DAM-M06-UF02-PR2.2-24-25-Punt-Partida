@@ -1,12 +1,20 @@
 package com.project;
 
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
 public class Ciutada {
-    private  long ciutadaId;
+
     private Long ciutatId;
     private String nom;
     private String cognom;
     private int edat;
+    private  Long ciutadaId;
 
+
+    public Ciutada() {
+    }
 
     public Ciutada(String nom, String cognom, int edat) {
         this.nom = nom;
@@ -14,11 +22,15 @@ public class Ciutada {
         this.edat = edat;
     }
 
-    public long getCiutadaId() {
+    public void setCiutadaId(Long ciutadaId) {
+        this.ciutadaId = ciutadaId;
+    }
+
+    public Long getCiutadaId() {
         return ciutadaId;
     }
 
-    public long getCiutatId() {
+    public Long getCiutatId() {
         return ciutatId;
     }
 
@@ -48,5 +60,16 @@ public class Ciutada {
 
     public void setEdat(int edat) {
         this.edat = edat;
+    }
+
+    @Override
+    public String toString() {
+        return "Ciutada{" +
+                "ciutadaId=" + ciutadaId +
+                ", ciutatId=" + ciutatId +
+                ", nom='" + nom + '\'' +
+                ", cognom='" + cognom + '\'' +
+                ", edat=" + edat +
+                '}';
     }
 }

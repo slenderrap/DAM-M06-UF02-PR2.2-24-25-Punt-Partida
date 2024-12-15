@@ -4,16 +4,16 @@
     <!--posem el nom de la taula i cap a on ha d'apuntar-->
     <class name="com.project.Ciutat" table="Ciutat">
         <!--en primer lloc generem la id de la taula-->
-        <id name="ciutatId" column="ciutatId" type="long">
+        <id name="ciutatId" column="ciutat_id" type="java.lang.Long">
             <generator class="native"/>
         </id>
         <!--name fa referencia al nom que te a Java i column al de sql-->
-        <property name="nom" column="name" type="string"/>
+        <property name="nom" column="nom" type="string"/>
         <property name="pais" column="pais" type="string"/>
         <property name="poblacio" column="poblacio" type="int"/>
         <!--asignes el nom de la vinculacio amb la classe Ciutada-->
-        <set name="ciutadans" cascade="all">
-            <key column="ciutatId"/>
+        <set name="ciutadans" cascade="all" inverse="true" lazy="false">
+            <key column="ciutat_id"/>
             <one-to-many class="com.project.Ciutada"/>
         </set>
     </class>

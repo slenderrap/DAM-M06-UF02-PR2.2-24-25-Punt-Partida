@@ -1,5 +1,8 @@
 package com.project;
 
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,7 +11,10 @@ public class Ciutat {
     private String nom;
     private String pais;
     private int poblacio;
-    private Set<Ciutada> ciutadants = new HashSet<>();
+    private Set<Ciutada> ciutadans = new HashSet<>();
+
+    public Ciutat() {
+    }
 
     public Ciutat(String nom, String pais, int poblacio) {
         this.nom = nom;
@@ -18,6 +24,10 @@ public class Ciutat {
 
     public Long getCiutatId() {
         return ciutatId;
+    }
+
+    public void setCiutatId(Long ciutatId) {
+        this.ciutatId = ciutatId;
     }
 
     public String getNom() {
@@ -44,24 +54,35 @@ public class Ciutat {
         this.poblacio = poblacio;
     }
 
-    public Set<Ciutada> getCiutadants() {
-        return ciutadants;
+    public Set<Ciutada> getCiutadans() {
+        return ciutadans;
     }
 
-    public void setCiutadants(Set<Ciutada> ciutadants) {
-        if (ciutadants != null) {
-            ciutadants.forEach(this::addCiutada);
+    public void setCiutadans(Set<Ciutada> ciutadans) {
+        if (ciutadans != null) {
+            ciutadans.forEach(this::addCiutada);
         }
     }
 
 
     public void addCiutada(Ciutada ciutada) {
-        ciutadants.add(ciutada);
+        ciutadans.add(ciutada);
         ciutada.setCiutatId(this.ciutatId);
     }
 
     public void removeCiutada(Ciutada ciutada) {
-        ciutadants.remove(ciutada);
+        ciutadans.remove(ciutada);
         ciutada.setCiutatId(null);
+    }
+
+    @Override
+    public String toString() {
+        return "Ciutat{" +
+                "ciutatId=" + ciutatId +
+                ", nom='" + nom + '\'' +
+                ", pais='" + pais + '\'' +
+                ", poblacio=" + poblacio +
+                ", ciutadans=" + ciutadans +
+                '}';
     }
 }
