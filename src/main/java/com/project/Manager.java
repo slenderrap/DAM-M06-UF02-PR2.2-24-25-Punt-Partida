@@ -19,8 +19,8 @@ public class Manager {
     public static void createSessionFactory() {
         try {
             Configuration conf = new Configuration();
-            conf.addResource("Ciutat.hbm.xml");
-            conf.addResource("Ciutada.hbm.xml");
+            conf.addAnnotatedClass(Ciutat.class);
+            conf.addAnnotatedClass(Ciutada.class);
             StandardServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                     .applySettings(conf.getProperties()).build();
             factory = conf.buildSessionFactory(serviceRegistry);

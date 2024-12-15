@@ -1,16 +1,20 @@
 package com.project;
 
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "ciutada")
 public class Ciutada {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private  Long ciutadaId;
+    @Column(name = "ciutatId")
     private Long ciutatId;
+
     private String nom;
     private String cognom;
     private int edat;
-    private  Long ciutadaId;
 
 
     public Ciutada() {

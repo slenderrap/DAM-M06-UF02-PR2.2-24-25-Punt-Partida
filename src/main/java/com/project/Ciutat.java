@@ -1,16 +1,21 @@
 package com.project;
 
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
-
+@Entity
+@Table(name = "ciutat")
 public class Ciutat {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ciutatId")
     private Long ciutatId;
+
     private String nom;
     private String pais;
     private int poblacio;
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<Ciutada> ciutadans = new HashSet<>();
 
     public Ciutat() {
